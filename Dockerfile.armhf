@@ -16,7 +16,6 @@
 # Part to build oxts.
 FROM pipill/armhf-alpine:edge as builder
 MAINTAINER Christian Berger "christian.berger@gu.se"
-MAINTAINER $RELEASER_NAME "RELEASER_EMAIL"
 
 RUN [ "cross-build-start" ]
 
