@@ -17,9 +17,9 @@ To run this microservice, simply start it as follows to get a usage description:
 docker run --rm seresearch/opendlv.sensors.oxts-multi
 ```
 
-To run this microservice for connecting to an OXTS GPS/INSS unit running at `192.168.1.2:3000` and to publish the messages according to OpenDLV Standard Message Set into session 111, simply start it as follows to get a usage description:
+To run this microservice for connecting to an OXTS GPS/INSS unit running at `192.168.1.255:3000` and to publish the messages according to OpenDLV Standard Message Set into session 111, simply start it as follows to get a usage description:
 ```
-docker run --rm --net=host seresearch/opendlv.sensors.oxts-multi 192.168.1.2 3000 111
+docker run --rm --net=host seresearch/opendlv.sensors.oxts-multi 192.168.1.255 3000 111
 ```
 
 ## Build from sources on the example of Ubuntu 16.04 LTS
