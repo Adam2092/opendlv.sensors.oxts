@@ -17,13 +17,24 @@ cmake_minimum_required(VERSION 3.2)
 
 project(oxts)
 
-# This project requires C++11 or newer.
-set(CMAKE_CXX_STANDARD 11)
+# This project requires C++14 or newer.
+set(CMAKE_CXX_STANDARD 14)
 # Strip unneeded symbols from binaries.
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
 find_package(libcluon REQUIRED)
 include_directories(SYSTEM ${CLUON_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp)
+# Generate messages from messages.odvd file.
+add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/messages.cpp
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                   COMMAND cluon-msc --cpp-sources --cpp-add-include-file=messages.hpp --out=${CMAKE_BINARY_DIR}/messages.cpp ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd
+                   COMMAND cluon-msc --cpp-headers --out=${CMAKE_BINARY_DIR}/messages.hpp ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd
+                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd)
+# Add current build directory as include directory as it contains generated files.
+include_directories(SYSTEM ${CMAKE_BINARY_DIR})
+
+# Create executable.
+add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp messages.cpp)
 target_link_libraries(${PROJECT_NAME} ${CLUON_LIBRARIES})
