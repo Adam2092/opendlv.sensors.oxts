@@ -17,13 +17,13 @@ To run this microservice, simply start it as follows to get a usage description:
 docker run --rm seresearch/opendlv.sensors.oxts-multi
 ```
 
-To run this microservice for connecting to an OXTS GPS/INSS unit running at `192.168.1.2:3000` and to publish the messages according to OpenDLV Standard Message Set into session 111, simply start it as follows to get a usage description:
+To run this microservice for connecting to an OXTS GPS/INSS unit running at `192.168.1.255:3000` and to publish the messages according to OpenDLV Standard Message Set into session 111, simply start it as follows to get a usage description:
 ```
-docker run --rm --net=host seresearch/opendlv.sensors.oxts-multi 192.168.1.2 3000 111
+docker run --rm --net=host seresearch/opendlv.sensors.oxts-multi 192.168.1.255 3000 111
 ```
 
 ## Build from sources on the example of Ubuntu 16.04 LTS
-To build this microservice, you need cmake, C++11 or newer, make, and [libcluon](https://github.com/chrberger/libcluon). You can either compile liblcuon from sources or use Launchpad:
+To build this microservice, you need cmake, C++14 or newer, make, and [libcluon](https://github.com/chrberger/libcluon). You can either compile liblcuon from sources or use Launchpad:
 
 ```
 sudo add-apt-repository ppa:chrberger/libcluon
