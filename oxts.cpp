@@ -17,18 +17,21 @@
 
 #include "cluon/cluon.hpp"
 #include "cluon/cluonDataStructures.hpp"
+#include "cluon/EnvelopeToJSON.hpp"
 #include "cluon/ToProtoVisitor.hpp"
 #include "cluon/UDPSender.hpp"
 #include "cluon/UDPReceiver.hpp"
 
 #include "messages.hpp"
 
+#include <cmath>
 #include <cstring>
 #include <array>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <thread>
+#include <vector>
 
 int main(int argc, char **argv) {
     int retVal{0};
@@ -91,6 +94,21 @@ int main(int argc, char **argv) {
                 dataToSend = sstr.str();
             }
 
+//    const char *messageSpecification = R"(
+//message opendlv.proxy.GeodeticWgs84Reading [id = 19] {
+//  double latitude [id = 1];
+//  double longitude [id = 3];
+//}
+
+//message opendlv.proxy.GeodeticHeadingReading [id = 1037] {
+//  float northHeading [id = 1];
+//})";
+
+//cluon::EnvelopeToJSON env2JSON;
+//env2JSON.setMessageSpecification(std::string(messageSpecification));
+//const std::string JSON_A = env2JSON.getJSONFromEnvelope(envelope);
+//std::cout << JSON_A << std::endl;
+
             toOD4Sender.send(std::move(dataToSend));
         };
 
@@ -102,6 +120,9 @@ int main(int argc, char **argv) {
                 constexpr std::size_t OXTS_PACKET_LENGTH{72};
                 constexpr uint8_t OXTS_FIRST_BYTE{0xE7};
                 std::string data{d};
+
+                std::clog << "Received packet of length " << data.size() << std::endl;
+
                 if ( (OXTS_PACKET_LENGTH == data.size()) && (OXTS_FIRST_BYTE == static_cast<uint8_t>(data.at(0))) ) {
                     const std::chrono::system_clock::time_point timeStamp{tp};
                     cluon::ToProtoVisitor protoEncoder;
@@ -119,7 +140,7 @@ int main(int argc, char **argv) {
                         buffer.read(reinterpret_cast<char*>(&longitude), sizeof(double));
 
                         opendlv::proxy::GeodeticWgs84Reading gps;
-                        gps.latitude(latitude).longitude(longitude);
+                        gps.latitude(latitude/M_PI*180.0).longitude(longitude/M_PI*180.0);
 
                         gps.accept(protoEncoder);
                         std::string payload{protoEncoder.encodedData()};
