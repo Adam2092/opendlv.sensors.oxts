@@ -121,6 +121,7 @@ int main(int argc, char **argv) {
                 constexpr uint8_t OXTS_FIRST_BYTE{0xE7};
                 std::string data{d};
 
+
                 std::clog << "Received packet of length " << data.size() << std::endl;
 
                 if ( (OXTS_PACKET_LENGTH == data.size()) && (OXTS_FIRST_BYTE == static_cast<uint8_t>(data.at(0))) ) {

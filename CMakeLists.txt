@@ -21,6 +21,7 @@ project(oxts)
 set(CMAKE_CXX_STANDARD 14)
 # Strip unneeded symbols from binaries.
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
 find_package(libcluon REQUIRED)
@@ -37,4 +38,4 @@ include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 
 # Create executable.
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp messages.cpp)
-target_link_libraries(${PROJECT_NAME} ${CLUON_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${CLUON_STATIC_LIBRARIES})
