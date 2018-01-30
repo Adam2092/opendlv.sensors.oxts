@@ -41,7 +41,7 @@ include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 
 
 # Create executable.
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp messages.cpp)
+add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxts_decoder.cpp messages.cpp)
 target_link_libraries(${PROJECT_NAME} ${CLUON_STATIC_LIBRARIES})
 
 
