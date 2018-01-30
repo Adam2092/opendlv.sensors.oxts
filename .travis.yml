@@ -15,11 +15,12 @@ addons:
     - g++-6
 #    - clang-3.8
 install:
+- "[ $CC = gcc ] && export CC=gcc-6 || true"
 - "[ $CXX = g++ ] && export CXX=g++-6 || true"
 #- "[ $CXX = clang++ ] && export CXX=clang++-3.8 || true"
 script:
   - git clone https://github.com/chrberger/libcluon.git
-  - cd libcluon && mkdir build && cd build && cmake ../libcluon && make && make test && make install && cd ../..
+  - cd libcluon && mkdir build && cd build && cmake ../libcluon && make && make test && sudo make install && cd ../..
   - mkdir -p build && cd build && cmake ..
   - make
   - make test
