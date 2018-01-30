@@ -121,6 +121,38 @@ int main(int argc, char **argv) {
                 constexpr uint8_t OXTS_FIRST_BYTE{0xE7};
                 std::string data{d};
 
+// Some test data.
+//std::vector<uint8_t> packet_bytes{
+//  0xe7, 0x9c, 0x95, 0x95, 0x08, 0x00, 0x7c, 0x0e,
+//  0x00, 0x06, 0x81, 0xfe, 0x45, 0x00, 0x00, 0xf4,
+//  0x00, 0x00, 0xaa, 0xff, 0xff, 0x04, 0xc2, 0x92,
+//  0xf2, 0x9e, 0x60, 0x0a, 0x35, 0xf0, 0x3f, 0x46,
+//  0x63, 0x83, 0x3b, 0x7c, 0x96, 0xcc, 0x3f, 0x23,
+//  0x5a, 0xd0, 0x42, 0x32, 0x00, 0x00, 0x05, 0x00,
+//  0x00, 0x2c, 0x00, 0x00, 0xeb, 0xae, 0xe0, 0x00,
+//  0x59, 0x00, 0xbe, 0x6b, 0xff, 0xe4, 0x1d, 0x01,
+//  0x00, 0x00, 0x00, 0xff, 0xff, 0x01, 0xff, 0xe4
+//};
+//{"dataType":19,
+//"sent":{"seconds":1517263024,
+//"microseconds":225405},
+//"received":{"seconds":0,
+//"microseconds":0},
+//"sampleTimeStamp":{"seconds":1517263024,
+//"microseconds":225405},
+//"senderStamp":0,
+//"opendlv_proxy_GeodeticWgs84Reading":{"latitude":58.037722605,
+//"longitude":12.796579564}}
+//{"dataType":1037,
+//"sent":{"seconds":1517263024,
+//"microseconds":225405},
+//"received":{"seconds":0,
+//"microseconds":0},
+//"sampleTimeStamp":{"seconds":1517263024,
+//"microseconds":225405},
+//"senderStamp":0,
+//"opendlv_proxy_GeodeticHeadingReading":{"northHeading":11.46342}}
+//                std::string data(reinterpret_cast<char*>(packet_bytes.data()), packet_bytes.size());
 
                 std::clog << "Received packet of length " << data.size() << std::endl;
 

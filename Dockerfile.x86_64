@@ -30,7 +30,7 @@ RUN git clone https://github.com/se-research/opendlv.sensors.oxts.git && \
     mkdir build && \
     cd build && \
     cmake -D CMAKE_BUILD_TYPE=Release .. && \
-    make && cp oxts /tmp
+    make && make test && cp oxts /tmp
 
 
 # Part to deploy oxts.

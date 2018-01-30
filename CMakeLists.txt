@@ -39,3 +39,13 @@ include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 # Create executable.
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp messages.cpp)
 target_link_libraries(${PROJECT_NAME} ${CLUON_STATIC_LIBRARIES})
+
+
+
+
+enable_testing()
+add_executable(${PROJECT_NAME}-Runner Test_oxts.cpp)
+target_link_libraries(${PROJECT_NAME}-Runner ${CLUON_LIBRARIES})
+add_test(NAME ${PROJECT_NAME}-Runner COMMAND ${PROJECT_NAME}-Runner)
+set_tests_properties(${PROJECT_NAME}-Runner PROPERTIES TIMEOUT 3000)
+

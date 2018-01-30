@@ -17,7 +17,7 @@ To run this microservice, simply start it as follows to get a usage description:
 docker run --rm seresearch/opendlv.sensors.oxts-multi
 ```
 
-To run this microservice for connecting to an OXTS GPS/INSS unit running at `192.168.1.255:3000` and to publish the messages according to OpenDLV Standard Message Set into session 111, simply start it as follows to get a usage description:
+To run this microservice for connecting to an OXTS GPS/INSS unit broadcasting data to `192.168.1.255:3000` and to publish the messages according to OpenDLV Standard Message Set into session 111, simply start it as follows to get a usage description:
 ```
 docker run --rm --net=host seresearch/opendlv.sensors.oxts-multi 192.168.1.255 3000 111
 ```
@@ -35,7 +35,7 @@ To build this microservice, just run `cmake` and `make` as follows:
 ```
 mkdir build && cd build
 cmake -D CMAKE_BUILD_TYPE=Release ..
-make && make install
+make && make test && make install
 ```
 
 
