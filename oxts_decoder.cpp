@@ -16,6 +16,7 @@
  */
 
 #include "oxts_decoder.hpp"
+#include "cluon/cluon.hpp"
 
 #include <cmath>
 #include <cstring>
