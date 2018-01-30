@@ -23,6 +23,8 @@
 #include <sstream>
 #include <string>
 
+#include <iostream>
+
 std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::GeodeticHeadingReading> >
     OxTSDecoder::decode(const std::string &data) noexcept {
     bool retVal{false};
@@ -45,7 +47,6 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
             buffer.read(reinterpret_cast<char*>(&latitude), sizeof(double));
             buffer.read(reinterpret_cast<char*>(&longitude), sizeof(double));
 
-            opendlv::proxy::GeodeticWgs84Reading gps;
             gps.latitude(latitude/M_PI*180.0).longitude(longitude/M_PI*180.0);
         }
 
@@ -54,7 +55,7 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
             float northHeading{0.0f};
 
             // Move to where heading is encoded.
-            constexpr uint32_t START_OF_HEADING{51};
+            constexpr uint32_t START_OF_HEADING{52};
             buffer.seekg(START_OF_HEADING);
 
             // Extract only three bytes from OxTS.
@@ -63,9 +64,8 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
             uint32_t data{0};
             std::memcpy(&data, tmp.data(), 4);
             data = le32toh(data);
-            northHeading = data * 1e-6;
+            northHeading = data * 1e-6f;
 
-            opendlv::proxy::GeodeticHeadingReading heading;
             heading.northHeading(northHeading);
         }
         retVal = true;
