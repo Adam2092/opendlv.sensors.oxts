@@ -1,22 +1,21 @@
 language: cpp
 
 compiler:
-#  - gcc
-  - clang
-#addons:
-#  apt:
-#    sources:
-##    - ubuntu-toolchain-r-test
+  - gcc
+#  - clang
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
 #    - sourceline: 'ppa:chrberger/libcluon'
-##   - llvm-toolchain-precise-3.8
-#    packages:
+#   - llvm-toolchain-precise-3.8
+    packages:
 #    - libcluon
-
 #    packages:
-#    - g++-6
+    - g++-6
 #    - clang-3.8
-#install:
-#- "[ $CXX = g++ ] && export CXX=g++-6 || true"
+install:
+- "[ $CXX = g++ ] && export CXX=g++-6 || true"
 #- "[ $CXX = clang++ ] && export CXX=clang++-3.8 || true"
 script:
   - git clone https://github.com/chrberger/libcluon.git
