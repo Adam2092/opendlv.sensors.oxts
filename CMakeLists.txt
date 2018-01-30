@@ -47,7 +47,7 @@ target_link_libraries(${PROJECT_NAME} ${CLUON_STATIC_LIBRARIES})
 
 # Add unit testing.
 enable_testing()
-add_executable(${PROJECT_NAME}-Runner Test_oxts.cpp)
+add_executable(${PROJECT_NAME}-Runner Test_oxts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxts_decoder.cpp messages.cpp)
 target_link_libraries(${PROJECT_NAME}-Runner ${CLUON_LIBRARIES})
 add_test(NAME ${PROJECT_NAME}-Runner COMMAND ${PROJECT_NAME}-Runner)
 

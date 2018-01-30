@@ -18,9 +18,15 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
 
-TEST_CASE("Test example.") {
-    uint8_t a{1};
-    uint8_t b{2};
-    REQUIRE(3 == a+b);
+#include "oxts_decoder.hpp"
+#include <string>
+
+TEST_CASE("Test OxTSDecoder with empty payload.") {
+    const std::string DATA;
+
+    OxTSDecoder d;
+    auto retVal = d.decode(DATA);
+
+    REQUIRE(!retVal.first);
 }
 
