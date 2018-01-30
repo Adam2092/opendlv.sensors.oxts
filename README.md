@@ -2,6 +2,9 @@
 
 This repository provides source code to interface with an OXTS GPS/INSS unit for the OpenDLV software ecosystem.
 
+[![Build Status](https://travis-ci.org/se-research/opendlv.sensors.oxts.svg?branch=master)](https://travis-ci.org/se-research/opendlv.sensors.oxts) [![License: GPLv3](https://img.shields.io/badge/license-GPL--3-blue.svg
+)](https://www.gnu.org/licenses/gpl-3.0.txt)
+
 ## Table of Contents
 * [Dependencies](#dependencies)
 * [Usage](#usage)
@@ -48,6 +51,5 @@ make && make test && make install
 
 ## License
 
-* This project is released under the terms of the GNU GPLv3 License - [![License: GPLv3](https://img.shields.io/badge/license-GPL--3-blue.svg
-)](https://www.gnu.org/licenses/gpl-3.0.txt)
+* This project is released under the terms of the GNU GPLv3 License
 
