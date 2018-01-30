@@ -3,11 +3,15 @@ language: cpp
 compiler:
   - gcc
 #  - clang
-#addons:
-#  apt:
-#    sources:
+addons:
+  apt:
+    sources:
 #    - ubuntu-toolchain-r-test
-#    - llvm-toolchain-precise-3.8
+    - sourceline: 'ppa:chrberger/libcluon'
+#   - llvm-toolchain-precise-3.8
+    packages:
+    - libcluon
+
 #    packages:
 #    - g++-6
 #    - clang-3.8
