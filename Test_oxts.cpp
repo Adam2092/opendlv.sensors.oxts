@@ -70,6 +70,6 @@ TEST_CASE("Test OxTSDecoder with sample payload.") {
     REQUIRE(58.037722605 == Approx(msg1.latitude()));
     REQUIRE(12.796579564 == Approx(msg1.longitude()));
 
-    REQUIRE(14.724843025 == Approx(msg2.northHeading()));
+    REQUIRE(2.1584727764 == Approx(msg2.northHeading()));
 }
 

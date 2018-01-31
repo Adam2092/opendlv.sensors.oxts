@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     if (4 != argc) {
         std::cerr << PROGRAM << " decodes latitude/longitude/heading from an OXTS GPS/INSS unit and publishes it to a running OpenDaVINCI session using the OpenDLV Standard Message Set." << std::endl;
         std::cerr << "Usage:   " << PROGRAM << " <IPv4-address> <port> <OpenDaVINCI session>" << std::endl;
-        std::cerr << "Example: " << PROGRAM << " 192.168.1.255 3000 111" << std::endl;
+        std::cerr << "Example: " << PROGRAM << " 0.0.0.0 3000 111" << std::endl;
         retVal = 1;
     } else {
         // Interface to a running OpenDaVINCI session.
@@ -117,6 +117,20 @@ int main(int argc, char **argv) {
                 msg2.accept(protoEncoder);
                 std::string payloadHeading{protoEncoder.encodedData()};
                 toOD4(msg2.ID(), std::move(payloadHeading), timeStamp);
+
+                {
+                    std::stringstream buffer;
+                    msg1.accept([](uint32_t, const std::string &, const std::string &) {},
+                               [&buffer](uint32_t, std::string &&, std::string &&n, auto v) { buffer << n << " = " << v << '\n'; },
+                               []() {});
+                    std::cout << buffer.str() << std::endl;
+
+                    std::stringstream buffer2;
+                    msg2.accept([](uint32_t, const std::string &, const std::string &) {},
+                               [&buffer2](uint32_t, std::string &&, std::string &&n, auto v) { buffer2 << n << " = " << v << '\n'; },
+                               []() {});
+                    std::cout << buffer2.str() << std::endl;
+                }
             }
         });
 

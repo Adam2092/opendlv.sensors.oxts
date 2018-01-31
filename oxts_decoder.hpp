@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef OXTSDECODER
+#define OXTSDECODER
+
 #include "messages.hpp"
 
 #include <string>
@@ -35,3 +38,6 @@ class OxTSDecoder {
     std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::GeodeticHeadingReading> >
         decode(const std::string &data) noexcept;
 };
+
+#endif
+

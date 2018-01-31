@@ -67,6 +67,14 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
             data = le32toh(data);
             northHeading = data * 1e-6f;
 
+            // Normalize between -M_PI .. M_PI.
+            while (northHeading < -M_PI) {
+                northHeading += 2.0f*M_PI;
+            }
+            while (northHeading > M_PI) {
+                northHeading -= 2.0f*M_PI;
+            }
+
             heading.northHeading(northHeading);
         }
         retVal = true;
