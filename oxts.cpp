@@ -99,10 +99,7 @@ int main(int argc, char **argv) {
         OxTSDecoder oxtsDecoder;
         cluon::UDPReceiver fromOXTS(OXTS_ADDRESS, std::stoi(OXTS_PORT),
             [&toOD4 = sendToOpenDaVINCI, &decoder=oxtsDecoder](std::string &&d, std::string &&/*from*/, std::chrono::system_clock::time_point &&tp) noexcept {
-            std::string data{d};
-            std::clog << "Received packet of length " << data.size() << std::endl;
-
-            auto retVal = decoder.decode(data);
+            auto retVal = decoder.decode(d);
             if (retVal.first) {
                 const std::chrono::system_clock::time_point timeStamp{tp};
 
