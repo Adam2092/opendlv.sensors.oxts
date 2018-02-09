@@ -29,8 +29,7 @@ RUN apk update && \
         cmake \
         g++ \
         git \
-        make && \
-    apk add libcluon --no-cache --repository https://chrberger.github.io/libcluon/alpine/v3.7 --allow-untrusted
+        make
 WORKDIR /tmp
 RUN git clone https://github.com/se-research/opendlv.sensors.oxts.git && \
     cd opendlv.sensors.oxts && \

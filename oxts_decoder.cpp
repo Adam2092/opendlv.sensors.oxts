@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "cluon-complete.hpp"
+
 #include "oxts_decoder.hpp"
-#include "cluon/cluon.hpp"
 
 #include <cmath>
 #include <cstring>

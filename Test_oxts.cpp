@@ -21,7 +21,7 @@
 #include "oxts_decoder.hpp"
 #include "messages.hpp"
 
-#include "cluon/cluon.hpp"
+#include "cluon-complete.hpp"
 #include <string>
 #include <vector>
 

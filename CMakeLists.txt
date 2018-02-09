@@ -26,28 +26,37 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 # Add further warning levels.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
+# Threads are necessary for linking.
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
-find_package(libcluon REQUIRED)
-include_directories(SYSTEM ${CLUON_INCLUDE_DIRS})
+
+# Generate cluon-msc from cluon-complete.hpp.
+add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/cluon-msc
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                   COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/cluon-complete.hpp ${CMAKE_BINARY_DIR}/cluon-complete.cpp
+                   COMMAND ${CMAKE_CXX_COMPILER} -o ${CMAKE_BINARY_DIR}/cluon-msc ${CMAKE_BINARY_DIR}/cluon-complete.cpp -std=c++14 -pthread -D HAVE_CLUON_MSC
+                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cluon-complete.hpp)
+
 
 # Generate messages from messages.odvd file.
 add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/messages.cpp
                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                   COMMAND cluon-msc --cpp-sources --cpp-add-include-file=messages.hpp --out=${CMAKE_BINARY_DIR}/messages.cpp ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd
-                   COMMAND cluon-msc --cpp-headers --out=${CMAKE_BINARY_DIR}/messages.hpp ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd
-                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd)
+                   COMMAND ${CMAKE_BINARY_DIR}/cluon-msc --cpp-sources --cpp-add-include-file=messages.hpp --out=${CMAKE_BINARY_DIR}/messages.cpp ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd
+                   COMMAND ${CMAKE_BINARY_DIR}/cluon-msc --cpp-headers --out=${CMAKE_BINARY_DIR}/messages.hpp ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd
+                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/messages.odvd ${CMAKE_BINARY_DIR}/cluon-msc)
 # Add current build directory as include directory as it contains generated files.
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 
 
 # Create executable.
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/oxts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxts_decoder.cpp messages.cpp)
-target_link_libraries(${PROJECT_NAME} ${CLUON_STATIC_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 
 # Add unit testing.
 enable_testing()
 add_executable(${PROJECT_NAME}-Runner Test_oxts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxts_decoder.cpp messages.cpp)
-target_link_libraries(${PROJECT_NAME}-Runner ${CLUON_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}-Runner Threads::Threads)
 add_test(NAME ${PROJECT_NAME}-Runner COMMAND ${PROJECT_NAME}-Runner)
 

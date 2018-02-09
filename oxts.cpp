@@ -15,12 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cluon/cluon.hpp"
-#include "cluon/cluonDataStructures.hpp"
-#include "cluon/ToProtoVisitor.hpp"
-#include "cluon/UDPSender.hpp"
-#include "cluon/UDPReceiver.hpp"
-
+#include "cluon-complete.hpp"
 #include "oxts_decoder.hpp"
 #include "messages.hpp"
 
