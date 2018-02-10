@@ -20,13 +20,14 @@
 
 #include "oxts-decoder.hpp"
 
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <thread>
 
-int main(int argc, char **argv) {
-    int retCode{0};
+int32_t main(int32_t argc, char **argv) {
+    int32_t retCode{0};
     const std::string PROGRAM(argv[0]);
     if (4 != argc) {
         std::cerr << PROGRAM << " decodes latitude/longitude/heading from an OXTS GPS/INSS unit and publishes it to a running OpenDaVINCI session using the OpenDLV Standard Message Set." << std::endl;

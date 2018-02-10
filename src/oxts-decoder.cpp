@@ -46,7 +46,7 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
             buffer.read(reinterpret_cast<char*>(&latitude), sizeof(double));
             buffer.read(reinterpret_cast<char*>(&longitude), sizeof(double));
 
-            gps.latitude(latitude/M_PI*180.0).longitude(longitude/M_PI*180.0);
+            gps.latitude(latitude / M_PI * 180.0).longitude(longitude / M_PI * 180.0);
         }
 
         // Decode heading.
@@ -67,10 +67,10 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
 
             // Normalize between -M_PI .. M_PI.
             while (northHeading < -M_PI) {
-                northHeading += 2.0f*static_cast<float>(M_PI);
+                northHeading += 2.0f * static_cast<float>(M_PI);
             }
             while (northHeading > M_PI) {
-                northHeading -= 2.0f*static_cast<float>(M_PI);
+                northHeading -= 2.0f * static_cast<float>(M_PI);
             }
 
             heading.northHeading(northHeading);
