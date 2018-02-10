@@ -15,8 +15,6 @@ install:
 - "[ $CXX = g++ ] && export CXX=g++-6 || true"
 
 script:
-  - git clone https://github.com/chrberger/libcluon.git
-  - cd libcluon && mkdir build && cd build && cmake ../libcluon && make && make test && sudo make install && cd ../..
   - mkdir -p build && cd build && cmake ..
   - make
   - make test
