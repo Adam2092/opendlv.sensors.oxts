@@ -47,13 +47,25 @@ int main(int argc, char **argv) {
             [&od4Session = od4, &decoder=oxtsDecoder](std::string &&d, std::string &&/*from*/, std::chrono::system_clock::time_point &&tp) noexcept {
             auto retVal = decoder.decode(d);
             if (retVal.first) {
-                const std::chrono::system_clock::time_point timeStamp{tp};
+                cluon::data::TimeStamp sampleTimePoint;
+                {
+                    // Transform chrono time representation to same behavior as gettimeofday.
+                    typedef std::chrono::duration<int32_t> seconds_type;
+                    typedef std::chrono::duration<int64_t, std::micro> microseconds_type;
+
+                    auto duration = tp.time_since_epoch();
+                    seconds_type s = std::chrono::duration_cast<seconds_type>(duration);
+                    microseconds_type us = std::chrono::duration_cast<microseconds_type>(duration);
+                    microseconds_type partial_us = us - std::chrono::duration_cast<microseconds_type>(s);
+
+                    sampleTimePoint.seconds(s.count()).microseconds(partial_us.count());
+                }
 
                 opendlv::proxy::GeodeticWgs84Reading msg1 = retVal.second.first;
-                od4Session.send(msg1);
+                od4Session.send(msg1, sampleTimePoint);
 
                 opendlv::proxy::GeodeticHeadingReading msg2 = retVal.second.second;
-                od4Session.send(msg2);
+                od4Session.send(msg2, sampleTimePoint);
 
                 {
                     std::stringstream buffer;
