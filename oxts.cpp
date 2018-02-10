@@ -16,8 +16,9 @@
  */
 
 #include "cluon-complete.hpp"
-#include "oxts_decoder.hpp"
-#include "messages.hpp"
+#include "opendlv-standard-message-set.hpp"
+
+#include "oxts-decoder.hpp"
 
 #include <array>
 #include <iostream>
@@ -26,13 +27,13 @@
 #include <thread>
 
 int main(int argc, char **argv) {
-    int retVal{0};
+    int retCode{0};
     const std::string PROGRAM(argv[0]);
     if (4 != argc) {
         std::cerr << PROGRAM << " decodes latitude/longitude/heading from an OXTS GPS/INSS unit and publishes it to a running OpenDaVINCI session using the OpenDLV Standard Message Set." << std::endl;
         std::cerr << "Usage:   " << PROGRAM << " <IPv4-address> <port> <OpenDaVINCI session>" << std::endl;
         std::cerr << "Example: " << PROGRAM << " 0.0.0.0 3000 111" << std::endl;
-        retVal = 1;
+        retCode = 1;
     } else {
         // Interface to a running OpenDaVINCI session.
         const std::string OPENDAVINCI_ADDRESS{"225.0.0." + std::string{argv[3]}};
@@ -132,5 +133,5 @@ int main(int argc, char **argv) {
             std::this_thread::sleep_for(1s);
         }
     }
-    return retVal;
+    return retCode;
 }

@@ -18,7 +18,7 @@
 #ifndef OXTSDECODER
 #define OXTSDECODER
 
-#include "messages.hpp"
+#include "opendlv-standard-message-set.hpp"
 
 #include <string>
 #include <utility>

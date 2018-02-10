@@ -17,7 +17,7 @@
 
 #include "cluon-complete.hpp"
 
-#include "oxts_decoder.hpp"
+#include "oxts-decoder.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -63,10 +63,10 @@ std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::
             // Extract only three bytes from OxTS.
             std::array<char, 4> tmp{0, 0, 0, 0};
             buffer.read(tmp.data(), 3);
-            uint32_t data{0};
-            std::memcpy(&data, tmp.data(), 4);
-            data = le32toh(data);
-            northHeading = data * 1e-6f;
+            uint32_t value{0};
+            std::memcpy(&value, tmp.data(), 4);
+            value = le32toh(value);
+            northHeading = value * 1e-6f;
 
             // Normalize between -M_PI .. M_PI.
             while (northHeading < -M_PI) {
