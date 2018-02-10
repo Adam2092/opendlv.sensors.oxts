@@ -25,13 +25,30 @@ set(CLUON_COMPLETE cluon-complete-v0.0.44.hpp)
 ################################################################################
 # This project requires C++14 or newer.
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 # Strip unneeded symbols from binaries.
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
 # Build a static binary.
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 # Add further warning levels.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wextra -Wshadow")
-# Threads are necessary for linking the resulting binary.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+    -D_XOPEN_SOURCE=700 \
+    -D_FORTIFY_SOURCE=2 \
+    -O2 \
+    -fstack-protector \
+    -fomit-frame-pointer \
+    -pipe \
+    -pedantic -pedantic-errors \
+    -Werror \
+    -Weffc++ \
+    -Wall -Wextra -Wshadow -Wdeprecated \
+    -Wdiv-by-zero -Wfloat-equal -Wfloat-conversion -Wsign-compare -Wpointer-arith \
+    -Wuninitialized -Wunreachable-code \
+    -Wunused -Wunused-function -Wunused-label -Wunused-parameter -Wunused-but-set-parameter -Wunused-but-set-variable \
+    -Wunused-value -Wunused-variable -Wunused-result \
+    -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn")
+# Threads are necessary for linking the resulting binaries.
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
@@ -55,6 +72,7 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.cpp
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 
 ################################################################################
+# Gather all object code first to avoid double compilation.
 add_library(${PROJECT_NAME}-core OBJECT ${CMAKE_CURRENT_SOURCE_DIR}/oxts-decoder.cpp ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.cpp)
 set(LIBRARIES Threads::Threads)
 

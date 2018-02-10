@@ -20,7 +20,6 @@
 
 #include "oxts-decoder.hpp"
 
-#include <array>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -35,58 +34,9 @@ int main(int argc, char **argv) {
         std::cerr << "Example: " << PROGRAM << " 0.0.0.0 3000 111" << std::endl;
         retCode = 1;
     } else {
-        // Interface to a running OpenDaVINCI session.
-        const std::string OPENDAVINCI_ADDRESS{"225.0.0." + std::string{argv[3]}};
-        constexpr uint16_t OPENDAVINCI_PORT{12175};
-        cluon::UDPSender toOpenDaVINCISender{OPENDAVINCI_ADDRESS, OPENDAVINCI_PORT};
-
-        // Helper function to send data to OpenDaVINCI session.
-        auto sendToOpenDaVINCI = [&toOD4Sender = toOpenDaVINCISender](uint32_t dataType, std::string &&payload, const std::chrono::system_clock::time_point &tp){
-            cluon::data::TimeStamp now;
-            {
-                // Transform chrono time representation to same behavior as gettimeofday.
-                typedef std::chrono::duration<int32_t> seconds_type;
-                typedef std::chrono::duration<int64_t, std::micro> microseconds_type;
-
-                auto duration = tp.time_since_epoch();
-                seconds_type s = std::chrono::duration_cast<seconds_type>(duration);
-                microseconds_type us = std::chrono::duration_cast<microseconds_type>(duration);
-                microseconds_type partial_us = us - std::chrono::duration_cast<microseconds_type>(s);
-
-                now.seconds(s.count()).microseconds(partial_us.count());
-            }
-
-            cluon::data::Envelope envelope;
-            {
-                envelope.dataType(dataType);
-                envelope.serializedData(payload);
-                envelope.sent(now);
-                envelope.sampleTimeStamp(now);
-            }
-
-            std::string dataToSend;
-            {
-                cluon::ToProtoVisitor protoEncoder;
-                envelope.accept(protoEncoder);
-
-                const std::string tmp{protoEncoder.encodedData()};
-                uint32_t length{static_cast<uint32_t>(tmp.size())};
-                length = htole32(length);
-
-                // Add OpenDaVINCI header.
-                std::array<char, 5> header;
-                header[0] = 0x0D;
-                header[1] = 0xA4;
-                header[2] = *(reinterpret_cast<char*>(&length)+0);
-                header[3] = *(reinterpret_cast<char*>(&length)+1);
-                header[4] = *(reinterpret_cast<char*>(&length)+2);
-
-                std::stringstream sstr;
-                sstr.write(header.data(), header.size());
-                sstr.write(tmp.data(), tmp.size());
-                dataToSend = sstr.str();
-            }
-            toOD4Sender.send(std::move(dataToSend));
+        // Interface to a running OpenDaVINCI session (ignoring any incoming Envelopes).
+        cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(std::string{argv[3]})),
+            [](auto){}
         };
 
         // Interface to OxTS.
@@ -94,22 +44,16 @@ int main(int argc, char **argv) {
         const std::string OXTS_PORT(argv[2]);
         OxTSDecoder oxtsDecoder;
         cluon::UDPReceiver fromOXTS(OXTS_ADDRESS, std::stoi(OXTS_PORT),
-            [&toOD4 = sendToOpenDaVINCI, &decoder=oxtsDecoder](std::string &&d, std::string &&/*from*/, std::chrono::system_clock::time_point &&tp) noexcept {
+            [&od4Session = od4, &decoder=oxtsDecoder](std::string &&d, std::string &&/*from*/, std::chrono::system_clock::time_point &&tp) noexcept {
             auto retVal = decoder.decode(d);
             if (retVal.first) {
                 const std::chrono::system_clock::time_point timeStamp{tp};
 
                 opendlv::proxy::GeodeticWgs84Reading msg1 = retVal.second.first;
+                od4Session.send(msg1);
+
                 opendlv::proxy::GeodeticHeadingReading msg2 = retVal.second.second;
-
-                cluon::ToProtoVisitor protoEncoder;
-                msg1.accept(protoEncoder);
-                std::string payloadGPS{protoEncoder.encodedData()};
-                toOD4(msg1.ID(), std::move(payloadGPS), timeStamp);
-
-                msg2.accept(protoEncoder);
-                std::string payloadHeading{protoEncoder.encodedData()};
-                toOD4(msg2.ID(), std::move(payloadHeading), timeStamp);
+                od4Session.send(msg2);
 
                 {
                     std::stringstream buffer;
@@ -129,7 +73,7 @@ int main(int argc, char **argv) {
 
         // Just sleep as this microservice is data driven.
         using namespace std::literals::chrono_literals;
-        while (fromOXTS.isRunning()) {
+        while (od4.isRunning()) {
             std::this_thread::sleep_for(1s);
         }
     }
