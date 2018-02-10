@@ -16,7 +16,6 @@
  */
 
 #include "cluon-complete.hpp"
-
 #include "oxts-decoder.hpp"
 
 #include <cmath>
@@ -24,8 +23,6 @@
 #include <array>
 #include <sstream>
 #include <string>
-
-#include <iostream>
 
 std::pair<bool, std::pair<opendlv::proxy::GeodeticWgs84Reading, opendlv::proxy::GeodeticHeadingReading> >
     OxTSDecoder::decode(const std::string &data) noexcept {

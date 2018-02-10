@@ -18,9 +18,9 @@ cmake_minimum_required(VERSION 3.2)
 project(oxts)
 
 ################################################################################
-# Defining the relevant version of OpenDLV Standard Message Set and libcluon.
+# Defining the relevant versions of OpenDLV Standard Message Set and libcluon.
 set(OPENDLV_STANDARD_MESSAGE_SET opendlv-v0.9.1.odvd)
-set(CLUON_COMPLETE cluon-complete-v0.0.44.hpp)
+set(CLUON_COMPLETE cluon-complete-v0.0.45.hpp)
 
 ################################################################################
 # This project requires C++14 or newer.
