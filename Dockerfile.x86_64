@@ -29,8 +29,8 @@ RUN git clone https://github.com/se-research/opendlv.sensors.oxts.git && \
     cd opendlv.sensors.oxts && \
     mkdir build && \
     cd build && \
-    cmake -D CMAKE_BUILD_TYPE=Release .. -D CMAKE_INSTALL_PREFIX=/tmp/oxts-dest && \
-    make && make test && make install && upx -9 /tmp/oxts-dest/bin/oxts
+    cmake -D CMAKE_BUILD_TYPE=Release .. -D CMAKE_INSTALL_PREFIX=/tmp && \
+    make && make test && make install && upx -9 /tmp/bin/oxts
 
 
 # Part to deploy oxts.
@@ -38,6 +38,6 @@ FROM alpine:3.7
 MAINTAINER Christian Berger "christian.berger@gu.se"
 
 WORKDIR /usr/bin
-COPY --from=builder /tmp/oxts-dest/bin/oxts .
+COPY --from=builder /tmp/bin/oxts .
 CMD ["/usr/bin/oxts"]
 

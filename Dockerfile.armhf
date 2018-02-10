@@ -35,7 +35,7 @@ RUN git clone https://github.com/se-research/opendlv.sensors.oxts.git && \
     cd opendlv.sensors.oxts && \
     mkdir build && \
     cd build && \
-    cmake -D CMAKE_BUILD_TYPE=Release .. -D CMAKE_INSTALL_PREFIX=/tmp/oxts-dest && \
+    cmake -D CMAKE_BUILD_TYPE=Release .. -D CMAKE_INSTALL_PREFIX=/tmp && \
     make && make test && make install
 
 RUN [ "cross-build-end" ]
@@ -46,6 +46,6 @@ FROM pipill/armhf-alpine:edge
 MAINTAINER Christian Berger "christian.berger@gu.se"
 
 WORKDIR /usr/bin
-COPY --from=builder /tmp/oxts-dest/bin/oxts .
+COPY --from=builder /tmp/bin/oxts .
 CMD ["/usr/bin/oxts"]
 
